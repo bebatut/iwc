@@ -1,0 +1,187 @@
+- doc: Test outline for Metagenomic-Functional-Analysis
+  job:
+    MetaPhlAn-tax-file:
+      class: Collection
+      collection_type: list
+      elements:
+      - class: File
+        identifier: SRR24759598
+        location: https://zenodo.org/records/18185564/files/Methaphlan-tax-file_SRR24759598.tabular
+      - class: File
+        identifier: SRR24759616
+        location: https://zenodo.org/records/18185564/files/Methaphlan-tax-file_SRR24759616.tabular
+    Input Dataset Collection:
+      class: Collection
+      collection_type: list:paired
+      elements:
+      - class: Collection
+        type: paired
+        identifier: SRR24759598
+        elements:
+        - class: File
+          identifier: forward
+          location: https://zenodo.org/records/18185564/files/SRR24759598_1.fastqsanger.gz
+        - class: File
+          identifier: reverse
+          location: https://zenodo.org/records/18185564/files/SRR24759598_2.fastqsanger.gz
+      - class: Collection
+        type: paired
+        identifier: SRR24759616
+        elements:
+        - class: File
+          identifier: forward
+          location: https://zenodo.org/records/18185564/files/SRR24759616_1.fastqsanger.gz
+        - class: File
+          identifier: reverse
+          location: https://zenodo.org/records/18185564/files/SRR24759616_2.fastqsanger.gz
+    'HUMAnN nucleotide database ': chocophlan-full-3.6.0-29032023
+    HUMAnN protein database: uniref-uniref90_diamond-3.6.0-29032023
+    Mapping to use for the grouping of HUMAnN Gene Families: utility_mapping-full-map_go_uniref90-3.0.0-13052021
+    Features to be renamed for HUMAnN Gene Families: utility_mapping-full-map_go_name-3.0.0-13052021
+  outputs:
+    GO_header:
+      path: test-data/GO_header.csv
+    HUMAnN-join-samples:
+      asserts:
+        has_text_matching:
+          expression: "SRR24759616"
+        has_text:
+          text: "GO:0000014"
+        has_n_columns:
+          n: 3
+    Final-column-reformatting:
+      asserts:
+        has_text_matching:
+          expression: "SRR24759598"
+        has_n_lines:
+          n: 2428
+    GO_terms_of_Samples:
+      asserts:
+        has_text_matching:
+          expression: "GO_name	HUMAnN_Abundance_RPKs"
+        has_n_lines:
+          n: 2429
+    gene_families_tsv:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "^# Gene Family"
+            has_text_matching:
+              expression: "^UniRef90_"
+            has_text_matching:
+              expression: "\\|g__"
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "^# Gene Family"
+            has_text_matching:
+              expression: "^UniRef90_"
+            has_text_matching:
+              expression: "\\|unclassified"
+    pathabundance_tsv:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "humann_Abundance"
+            has_text_matching:
+              expression: "Pathway"
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "UNMAPPED"
+            has_n_lines:
+              n: 410              
+    pathcoverage_tsv:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "UNINTEGRATED|g__Bartonella.s__Bartonella_apis"
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "unclassified"
+    Normalized-gene-families:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "humann_Abundance-RELAB"
+            has_text_matching:
+              expression: "0.0038037"
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "0.365674"
+            has_text_matching:
+              expression: "UniRef90_A0A1R0FA39"
+    Normalized-pathways:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "Pathway"
+            has_text_matching:
+              expression: "0.538568"
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "UNMAPPED"
+            has_text_matching:
+              expression: "g__Bartonella.s__Bartonella_apis"
+    Genes&pathways:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "Pathway"
+            has_n_lines:
+              n: 3623
+        SRR24759616:
+          asserts:
+            has_n_lines:
+              n: 2089
+    GO_terms_with_taxonomic_info:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "Gene Family"
+            has_n_lines:
+              n: 12021
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "UNGROUPED|g__Snodgrassella.s__Snodgrassella_alvi"
+    Column-separated:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "203213.0"
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "g__Bifidobacterium.s__Bifidobacterium_asteroides"
+    Go_terms_and_abundances_only:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "single-stranded DNA endodeoxyribonuclease activity"
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "phosphopyruvate hydratase complex"
+    joining-term-abundance-key-values:
+      element_tests:
+        SRR24759598:
+          asserts:
+            has_text_matching:
+              expression: "ribosomal large subunit assembly"
+        SRR24759616:
+          asserts:
+            has_text_matching:
+              expression: "158.047"
